@@ -388,6 +388,7 @@ impl Item<'_> {
 
 /// An error from the `parse` function.
 #[derive(Debug, Clone, PartialEq, Eq, Copy, Hash)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct ParseError(ParseErrorKind);
 
 impl ParseError {
@@ -400,6 +401,7 @@ impl ParseError {
 /// The category of parse error
 #[allow(clippy::manual_non_exhaustive)]
 #[derive(Debug, Clone, PartialEq, Eq, Copy, Hash)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ParseErrorKind {
     /// Given field is out of permitted range.
     OutOfRange,
