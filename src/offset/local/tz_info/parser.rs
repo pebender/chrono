@@ -153,6 +153,7 @@ impl<'a> State<'a> {
 
 /// TZif header
 #[derive(Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 struct Header {
     /// TZif version
     version: Version,
@@ -214,6 +215,7 @@ impl Header {
 
 /// A `Cursor` contains a slice of a buffer and a read count.
 #[derive(Debug, Eq, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub(crate) struct Cursor<'a> {
     /// Slice representing the remaining data to be read
     remaining: &'a [u8],
@@ -338,6 +340,7 @@ pub(crate) fn read_be_i64(bytes: &[u8]) -> Result<i64, Error> {
 
 /// TZif version
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 enum Version {
     /// Version 1
     V1,

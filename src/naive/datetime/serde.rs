@@ -1288,6 +1288,7 @@ mod tests {
     #[test]
     fn test_serde_bincode_optional() {
         #[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
+        #[cfg_attr(feature = "defmt", derive(defmt::Format))]
         struct Test {
             one: Option<i64>,
             #[serde(with = "ts_nanoseconds_option")]

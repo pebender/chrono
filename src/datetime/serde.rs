@@ -9,18 +9,22 @@ use crate::offset::{FixedOffset, Offset, TimeZone, Utc};
 
 #[doc(hidden)]
 #[derive(Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct SecondsTimestampVisitor;
 
 #[doc(hidden)]
 #[derive(Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct NanoSecondsTimestampVisitor;
 
 #[doc(hidden)]
 #[derive(Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MicroSecondsTimestampVisitor;
 
 #[doc(hidden)]
 #[derive(Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MilliSecondsTimestampVisitor;
 
 /// Serialize to an RFC 3339 formatted string

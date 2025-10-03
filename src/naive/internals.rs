@@ -128,6 +128,32 @@ impl fmt::Debug for YearFlags {
     }
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for YearFlags {
+    fn format(&self, f: defmt::Formatter) {
+        let YearFlags(flags) = *self;
+        match flags {
+            0o15 => "A".format(f),
+            0o05 => "AG".format(f),
+            0o14 => "B".format(f),
+            0o04 => "BA".format(f),
+            0o13 => "C".format(f),
+            0o03 => "CB".format(f),
+            0o12 => "D".format(f),
+            0o02 => "DC".format(f),
+            0o11 => "E".format(f),
+            0o01 => "ED".format(f),
+            0o10 => "F?".format(f),
+            0o00 => "FE?".format(f), // non-canonical
+            0o17 => "F".format(f),
+            0o07 => "FE".format(f),
+            0o16 => "G".format(f),
+            0o06 => "GF".format(f),
+            _ => defmt::write!(f, "YearFlags({})", flags),
+        }
+    }
+}
+
 // OL: (ordinal << 1) | leap year flag
 const MAX_OL: u32 = 366 << 1; // `(366 << 1) | 1` would be day 366 in a non-leap year
 const MAX_MDL: u32 = (12 << 6) | (31 << 1) | 1;
@@ -368,6 +394,21 @@ impl fmt::Debug for Mdf {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let Mdf(mdf) = *self;
         write!(
+            f,
+            "Mdf(({} << 9) | ({} << 4) | {:#04o} /*{:?}*/)",
+            mdf >> 9,
+            (mdf >> 4) & 0b1_1111,
+            mdf & 0b1111,
+            YearFlags((mdf & 0b1111) as u8)
+        )
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Mdf {
+    fn format(&self, f: defmt::Formatter) {
+        let Mdf(mdf) = *self;
+        defmt::write!(
             f,
             "Mdf(({} << 9) | ({} << 4) | {:#04o} /*{:?}*/)",
             mdf >> 9,

@@ -1355,6 +1355,7 @@ fn test_datetime_is_send_and_copy() {
     }
 
     #[derive(Copy, Clone, Debug)]
+    #[cfg_attr(feature = "defmt", derive(defmt::Format))]
     struct Off(());
     impl Offset for Off {
         fn fix(&self) -> FixedOffset {

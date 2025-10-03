@@ -27,7 +27,6 @@ use crate::naive::{NaiveDate, NaiveDateTime};
     archive_attr(derive(Clone, Copy, PartialEq, Eq, Hash, Debug))
 )]
 #[cfg_attr(feature = "rkyv-validation", archive(check_bytes))]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct FixedOffset {
     local_minus_utc: i32,
 }
@@ -172,6 +171,23 @@ impl fmt::Debug for FixedOffset {
 impl fmt::Display for FixedOffset {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         fmt::Debug::fmt(self, f)
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for FixedOffset {
+    fn format(&self, f: defmt::Formatter) {
+        let offset = self.local_minus_utc;
+        let (sign, offset) = if offset < 0 { ('-', -offset) } else { ('+', offset) };
+        let sec = offset.rem_euclid(60);
+        let mins = offset.div_euclid(60);
+        let min = mins.rem_euclid(60);
+        let hour = mins.div_euclid(60);
+        if sec == 0 {
+            defmt::write!(f, "{}{:02}:{:02}", sign, hour, min)
+        } else {
+            defmt::write!(f, "{}{:02}:{:02}:{:02}", sign, hour, min, sec)
+        }
     }
 }
 

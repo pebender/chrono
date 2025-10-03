@@ -55,6 +55,7 @@ pub use pure_rust_locales::Locale;
 #[cfg(not(feature = "unstable-locales"))]
 mod unlocalized {
     #[derive(Copy, Clone, Debug)]
+    #[cfg_attr(feature = "defmt", derive(defmt::Format))]
     pub(crate) struct Locale;
 
     pub(crate) const fn default_locale() -> Locale {

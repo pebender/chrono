@@ -54,6 +54,7 @@ fn find_tz_data<const ENTRY_LEN: usize>(
 
 /// Header of the `tzdata` file.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 struct TzDataHeader {
     version: [u8; 5],
     index_offset: u32,
