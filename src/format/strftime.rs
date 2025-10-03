@@ -189,7 +189,6 @@ use alloc::vec::Vec;
 /// [`DateTime`]: crate::DateTime
 /// [`format::parse()`]: crate::format::parse()
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct StrftimeItems<'a> {
     /// Remaining portion of the string.
     remainder: &'a str,
@@ -201,6 +200,16 @@ pub struct StrftimeItems<'a> {
     locale_str: &'a str,
     #[cfg(feature = "unstable-locales")]
     locale: Option<Locale>,
+}
+
+// TODO: Switch to derived version when pure_rust_locales has defmt support.
+#[cfg(feature = "defmt")]
+impl<'a> defmt::Format for StrftimeItems<'a> {
+    fn format(&self, f: defmt::Formatter) {
+        self.remainder.format(f);
+        self.queue.format(f);
+        self.lenient.format(f);
+    }
 }
 
 impl<'a> StrftimeItems<'a> {
